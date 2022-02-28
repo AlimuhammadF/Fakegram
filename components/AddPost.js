@@ -10,6 +10,12 @@ import uniqueString from "unique-string";
 export default function AddPost() {
 	const { user } = useContext(AuthContext);
 
+	//onchange title
+	const { titleRef, setTitleRef } = useState(null);
+	const onChangeTitle = (e) => {
+		setTitleRef(e.target.value);
+	};
+
 	//image display
 	const [imagePicker, setImagePicker] = useState(null);
 	const addImageToPost = (e) => {
@@ -24,7 +30,6 @@ export default function AddPost() {
 
 	//adding post
 	const [loading, setLoading] = useState(false);
-	const titleRef = useRef();
 
 	async function handleAddingPost() {
 		setLoading(true);
@@ -33,7 +38,7 @@ export default function AddPost() {
 		try {
 			const imageRef = ref(storage, "posts/" + id + "/image");
 			await setDoc(doc(db, "posts", id), {
-				title: titleRef.current.value,
+				title: titleRef,
 				image: "https://firebasestorage.googleapis.com/v0/b/fakegram-e6635.appspot.com/o/Frame%206.png?alt=media&token=be7e738c-a5de-43a3-b405-042b27cab406",
 				userUid: user?.uid,
 				userImage: user?.photoURL,
@@ -48,6 +53,7 @@ export default function AddPost() {
 					});
 				}
 			);
+			setTitleRef(null);
 			setImagePicker(null);
 			setLoading(false);
 			nProgress.done();
@@ -72,7 +78,8 @@ export default function AddPost() {
 					<textarea
 						className="resize-none bg-accent w-full bg-opacity-10 p-5 rounded-2xl focus:outline-accent"
 						placeholder="Post what's in your mind"
-						ref={titleRef}
+						value={titleRef}
+						onChange={onChangeTitle}
 					></textarea>
 				</div>
 				<div className="flex justify-between mt-3">
