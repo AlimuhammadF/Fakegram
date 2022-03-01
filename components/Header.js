@@ -39,7 +39,7 @@ export default function Header() {
 			initial="initial"
 			animate="animate"
 			transition={{ duration: 0.7, type: "spring" }}
-			className="w-screen fixed z-50 top-0 h-20 flex justify-center bg-white drop-shadow-md"
+			className="w-screen fixed z-30 top-0 h-20 flex justify-center bg-white drop-shadow-md"
 		>
 			<div className="max-w-5xl px-5 flex flex-grow justify-between items-center">
 				<div className="text-accent text-2xl font-semibold">
