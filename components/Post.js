@@ -103,8 +103,8 @@ export default function Post({ title, id, image, userImage, userName }) {
 						className="text-sm px-3 mb-4 text-accent"
 					>
 						{commentStatus
-							? "Hide all Comments"
-							: "View all Comments"}
+							? `Hide all ${comments.length} Comments`
+							: `View all ${comments.length} Comments`}
 					</button>
 					{commentStatus
 						? comments.map((data) => (
