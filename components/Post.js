@@ -47,13 +47,13 @@ export default function Post({ title, id, image, userImage, userName }) {
 	const handleAddComment = async () => {
 		nProgress.start();
 		try {
+			setComment("");
 			await addDoc(collection(db, "posts", id, "comments"), {
 				name: user?.displayName,
 				comment: comment,
 				userImage: user?.photoURL,
 				timestamp: serverTimestamp(),
 			});
-			setComment("");
 			nProgress.done();
 		} catch (error) {
 			alert(error);
