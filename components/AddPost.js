@@ -7,6 +7,7 @@ import nProgress from "nprogress";
 import AuthContext from "../context/AuthContext";
 import uniqueString from "unique-string";
 import Error from "./StatusCode/Error";
+import Success from "./StatusCode/Success";
 
 export default function AddPost() {
 	const { user } = useContext(AuthContext);
@@ -25,6 +26,21 @@ export default function AddPost() {
 			}, 2500);
 		}
 	}, errorCode);
+
+	//handle successStatus
+	const [successCode, setSuccessCode] = useState(null);
+	const cancelSuccessCode = () => {
+		if (successCode) {
+			setSuccessCode(null);
+		}
+	};
+	useEffect(() => {
+		if (successCode) {
+			setTimeout(() => {
+				setSuccessCode(null);
+			}, 2500);
+		}
+	}, successCode);
 
 	//image display
 	const [imagePicker, setImagePicker] = useState(null);
@@ -72,6 +88,7 @@ export default function AddPost() {
 				setImagePicker(null);
 				setLoading(false);
 				nProgress.done();
+				setSuccessCode("Post has been uploaded");
 			} catch (error) {
 				alert(error);
 				setLoading(false);
@@ -82,6 +99,10 @@ export default function AddPost() {
 
 	return (
 		<div>
+			<Success
+				successCode={successCode}
+				cancelSuccessCode={cancelSuccessCode}
+			/>
 			<Error errorCode={errorCode} cancelErrorCode={cancelErrorCode} />
 			<div className="w-screen flex justify-center mt-8">
 				<div className="max-w-2xl mx-5 flex flex-col flex-grow bg-white border border-accent border-opacity-40 py-6 px-8 rounded-2xl">

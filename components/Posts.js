@@ -1,4 +1,4 @@
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebase";
 import Post from "./Post";
@@ -9,7 +9,10 @@ export default function Posts({ postProps }) {
 		try {
 			onSnapshot(query(collection(db, "posts")), (snapshot) => {
 				setPosts(
-					snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+					snapshot.docs.map((doc) => ({
+						...doc.data(),
+						id: doc.id,
+					}))
 				);
 			});
 		} catch (error) {

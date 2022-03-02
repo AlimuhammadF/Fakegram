@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Posts from "../components/Posts";
 import nookies from "nookies";
 import { firebaseAdmin } from "../firebase/firebase-admin";
-import { collection, getDocs, query } from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 
 export default function Home({ postProps }) {
