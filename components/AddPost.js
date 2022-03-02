@@ -8,6 +8,7 @@ import AuthContext from "../context/AuthContext";
 import uniqueString from "unique-string";
 import Error from "./StatusCode/Error";
 import Success from "./StatusCode/Success";
+import { PhotographIcon } from "@heroicons/react/solid";
 
 export default function AddPost() {
 	const { user } = useContext(AuthContext);
@@ -123,12 +124,18 @@ export default function AddPost() {
 						></textarea>
 					</div>
 					<div className="flex justify-between mt-3">
-						<div className="space-x-4">
+						<div className="space-x-4 flex">
 							<label
 								htmlFor="imagepicker"
-								className="bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer"
+								className="hidden md:flex bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer"
 							>
 								Upload an Image
+							</label>
+							<label
+								htmlFor="imagepicker"
+								className="md:hidden flex -translate-x-4 justify-center bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer"
+							>
+								<PhotographIcon className="w-6 h-6" />
 							</label>
 							<input
 								type="file"
@@ -137,9 +144,15 @@ export default function AddPost() {
 								hidden
 								onChange={addImageToPost}
 							/>
-							<button className="bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all">
+							<button className="hidden md:flex bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all">
 								Emojies
 							</button>
+							<label
+								htmlFor="imagepicker"
+								className="md:hidden flex -translate-x-4 justify-center bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer"
+							>
+								<PhotographIcon className="w-6 h-6" />
+							</label>
 						</div>
 						<div>
 							<button
