@@ -56,7 +56,6 @@ export default function AddPost() {
 
 	//adding post
 	const [loading, setLoading] = useState(false);
-	const titleRef = useRef();
 	const [title, setTitle] = useState("");
 
 	async function handleAddingPost() {
