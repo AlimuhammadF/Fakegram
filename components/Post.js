@@ -1,10 +1,11 @@
 import Image from "next/image";
-import testImage from "../public/test.jpg";
 import { DotsVerticalIcon } from "@heroicons/react/solid";
 import { useState, useContext, useEffect } from "react";
 import {
 	addDoc,
 	collection,
+	deleteDoc,
+	doc,
 	onSnapshot,
 	orderBy,
 	query,
@@ -13,8 +14,16 @@ import {
 import { db } from "../firebase/firebase";
 import AuthContext from "../context/AuthContext";
 import nProgress from "nprogress";
+import Error from "./StatusCode/Error";
 
-export default function Post({ title, id, image, userImage, userName }) {
+export default function Post({
+	title,
+	id,
+	image,
+	userImage,
+	userName,
+	userUid,
+}) {
 	const { user } = useContext(AuthContext);
 	const [comment, setComment] = useState("");
 	const [comments, setComments] = useState([]);
@@ -61,6 +70,28 @@ export default function Post({ title, id, image, userImage, userName }) {
 		}
 	};
 
+	//handle delete
+	const handleDeletePost = async () => {
+		nProgress.start();
+		try {
+			await deleteDoc(doc(db, "posts", id));
+			nProgress.done();
+		} catch (error) {
+			nProgress.done();
+			alert(error);
+		}
+	};
+
+	//handle Menu
+	const [menuState, setMenuState] = useState(false);
+	function handleMenu() {
+		if (menuState) {
+			setMenuState(false);
+		} else {
+			setMenuState(true);
+		}
+	}
+
 	return (
 		<div className="max-w-2xl flex flex-col flex-grow border border-accent border-opacity-40 bg-white mx-5 mb-10">
 			<div className="w-full ">
@@ -79,13 +110,33 @@ export default function Post({ title, id, image, userImage, userName }) {
 						</div>
 						<h4>{userName}</h4>
 					</div>
-					<div>
-						<DotsVerticalIcon className="w-5 h-5 text-accent cursor-pointer" />
-					</div>
+					{userUid === user?.uid ? (
+						<div className="relative">
+							<DotsVerticalIcon
+								onClick={handleMenu}
+								className="w-5 h-5 text-accent cursor-pointer select-none"
+							/>
+							{menuState ? (
+								<div className="absolute right-0 top-8 bg-accent py-3 px-5 select-none">
+									<button
+										onClick={handleDeletePost}
+										className="text-white"
+									>
+										Delete
+									</button>
+								</div>
+							) : (
+								""
+							)}
+						</div>
+					) : (
+						""
+					)}
 				</div>
 				<div className="py-3 px-8 font-semibold text-gray-600">
 					{title}
 				</div>
+
 				{/* Image portion */}
 				<div className="w-full">
 					<Image
@@ -96,6 +147,7 @@ export default function Post({ title, id, image, userImage, userName }) {
 						src={image}
 					/>
 				</div>
+
 				{/* comments */}
 				<div className="px5 py-3">
 					<button

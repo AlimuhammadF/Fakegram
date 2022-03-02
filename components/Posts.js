@@ -31,6 +31,7 @@ export default function Posts({ postProps }) {
 						id={data.id}
 						image={data.image}
 						userName={data.userName}
+						userUid={data.userUid}
 					/>
 				))}
 			</div>
