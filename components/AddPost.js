@@ -8,7 +8,7 @@ import AuthContext from "../context/AuthContext";
 import uniqueString from "unique-string";
 import Error from "./StatusCode/Error";
 import Success from "./StatusCode/Success";
-import { PhotographIcon } from "@heroicons/react/solid";
+import { EmojiHappyIcon, PhotographIcon } from "@heroicons/react/solid";
 
 export default function AddPost() {
 	const { user } = useContext(AuthContext);
@@ -147,11 +147,8 @@ export default function AddPost() {
 							<button className="hidden md:flex bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all">
 								Emojies
 							</button>
-							<label
-								htmlFor="imagepicker"
-								className="md:hidden flex -translate-x-4 justify-center bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer"
-							>
-								<PhotographIcon className="w-6 h-6" />
+							<label className="md:hidden flex -translate-x-4 justify-center bg-accent bg-opacity-20 py-2 px-5 rounded-xl text-accent hover:bg-opacity-40 transition-all cursor-pointer">
+								<EmojiHappyIcon className="w-6 h-6" />
 							</label>
 						</div>
 						<div>
