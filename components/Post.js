@@ -1,7 +1,9 @@
 import Image from "next/image";
-import { DotsVerticalIcon } from "@heroicons/react/solid";
+import {
 	DotsVerticalIcon,
 	HeartIcon as HeartIconFilled,
+} from "@heroicons/react/solid";
+import { ChatIcon, HeartIcon } from "@heroicons/react/outline";
 import { useState, useContext, useEffect } from "react";
 import {
 	addDoc,
@@ -12,11 +14,13 @@ import {
 	orderBy,
 	query,
 	serverTimestamp,
+	setDoc,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import AuthContext from "../context/AuthContext";
 import nProgress from "nprogress";
 import Error from "./StatusCode/Error";
+import { async } from "@firebase/util";
 
 export default function Post({
 	title,
@@ -52,7 +56,7 @@ export default function Post({
 				setComments(snapshot.docs);
 			}
 		);
-	}, [db]);
+	}, [db, id]);
 
 	//handle adding comment
 	const handleAddComment = async () => {
@@ -93,6 +97,36 @@ export default function Post({
 			setMenuState(true);
 		}
 	}
+
+	//handle Like
+	const [hasLiked, setHasLiked] = useState();
+	const [likes, setLikes] = useState([]);
+
+	useEffect(
+		() =>
+			onSnapshot(collection(db, "posts", id, "likes"), (snapshot) => {
+				setLikes(snapshot.docs);
+			}),
+		[db, id]
+	);
+
+	useEffect(
+		() =>
+			setHasLiked(
+				likes.findIndex((like) => like.id === user?.uid) !== -1
+			),
+		[likes]
+	);
+
+	const handleLike = async () => {
+		if (hasLiked) {
+			await deleteDoc(doc(db, "posts", id, "likes", user?.uid));
+		} else {
+			await setDoc(doc(db, "posts", id, "likes", user?.uid), {
+				username: user?.displayName,
+			});
+		}
+	};
 
 	return (
 		<div className="max-w-2xl flex flex-col flex-grow border border-accent border-opacity-40 bg-white mx-5 mb-10">
@@ -148,6 +182,29 @@ export default function Post({
 						objectFit="cover"
 						src={image}
 					/>
+				</div>
+
+				{/* likes section */}
+
+				<div className="py-2 px-3 space-y-2">
+					<div className="text-sm font-semibold">
+						{likes.length} Likes
+					</div>
+					<div className="flex space-x-2">
+						{hasLiked ? (
+							<HeartIconFilled
+								onClick={handleLike}
+								className="h-7 w-7 cursor-pointer text-red-500 "
+							/>
+						) : (
+							<HeartIcon
+								onClick={handleLike}
+								className="h-7 w-7 cursor-pointer"
+							/>
+						)}
+
+						<ChatIcon className="h-7 w-7 cursor-pointer " />
+					</div>
 				</div>
 
 				{/* comments */}
