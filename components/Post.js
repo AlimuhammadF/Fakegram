@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { DotsVerticalIcon } from "@heroicons/react/solid";
+	DotsVerticalIcon,
+	HeartIcon as HeartIconFilled,
 import { useState, useContext, useEffect } from "react";
 import {
 	addDoc,
